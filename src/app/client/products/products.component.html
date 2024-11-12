@@ -1,0 +1,66 @@
+<h2>Manage Bank Products</h2>
+
+<!-- Product Form -->
+<section class="product-form">
+  <h3>Add New Product</h3>
+  <form (ngSubmit)="addProduct()">
+    <label>Product Name:</label>
+    <input type="text" [(ngModel)]="productName" name="productName" required />
+
+    <label>Category:</label>
+    <input type="text" [(ngModel)]="category" name="category" required />
+
+    <label>Description:</label>
+    <textarea [(ngModel)]="description" name="description" required></textarea>
+
+    <label>Interest Rate (%):</label>
+    <input type="number" [(ngModel)]="interestRate" name="interestRate" required />
+
+    <label>Eligibility Criteria:</label>
+    <textarea [(ngModel)]="eligibility" name="eligibility" required></textarea>
+
+    <!-- Loan Calculator Section -->
+    <div class="calculator-section">
+      <h4>Loan Calculator</h4>
+      <label>Max Loan Amount:</label>
+      <input type="number" [(ngModel)]="maxLoanAmount" name="maxLoanAmount" required />
+
+      <label>Loan Interest Rate (%):</label>
+      <input type="number" [(ngModel)]="loanInterestRate" name="loanInterestRate" required />
+    </div>
+
+    <!-- Special Offers Section -->
+    <div class="offers-section">
+      <h4>Special Offers</h4>
+      <label>Offer Title:</label>
+      <input type="text" [(ngModel)]="offerTitle" name="offerTitle" />
+
+      <label>Offer Description:</label>
+      <textarea [(ngModel)]="offerDescription" name="offerDescription"></textarea>
+
+      <label>Offer Dates:</label>
+      <input type="date" [(ngModel)]="offerStartDate" name="offerStartDate" />
+      to
+      <input type="date" [(ngModel)]="offerEndDate" name="offerEndDate" />
+    </div>
+
+    <!-- Customer Reviews Section -->
+    <div class="reviews-section">
+      <h4>Customer Reviews</h4>
+      <label>Review:</label>
+      <textarea [(ngModel)]="review" name="review"></textarea>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h4>Frequently Asked Questions</h4>
+      <label>FAQ Question:</label>
+      <textarea [(ngModel)]="faqQuestion" name="faqQuestion"></textarea>
+
+      <label>FAQ Answer:</label>
+      <textarea [(ngModel)]="faqAnswer" name="faqAnswer"></textarea>
+    </div>
+
+    <button type="submit">Save Product</button>
+  </form>
+</section>

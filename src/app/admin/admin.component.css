@@ -1,0 +1,13 @@
+.dashboard-content {
+    margin-top: 70px; /* Add margin to the top of your content to avoid it being hidden behind the navbar */
+
+    display: flex; /* Use flexbox for layout */
+    flex-direction: row; /* Align children in a row */
+    margin-left: 10px; /* Optional margin to separate from sidebar */
+  }
+  
+  .main-content {
+    flex-grow: 1; /* Allow main content to take the remaining space */
+    padding: 20px; /* Add some padding to main content */
+  }
+  

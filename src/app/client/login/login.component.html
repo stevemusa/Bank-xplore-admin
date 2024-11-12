@@ -1,0 +1,41 @@
+<div class="login-container">
+  <img src="assets/logo.png" alt="Bank-Xplore Logo" class="logo" />
+  <h2 class="welcome-message">Bank-Xplore Client-side Login</h2>
+  <form (ngSubmit)="onSubmit()" #myForm="ngForm" class="login-form">
+      <div class="form-group">
+          <label for="email">Email:</label><br />
+          <input
+              type="text"
+              id="email"
+              [(ngModel)]="email"
+              name="email"
+              required
+              class="input-field"
+              placeholder="Enter your email"
+          />
+          <small *ngIf="myForm.submitted && !email" class="error-message">
+              Email is required
+          </small>
+      </div>
+
+      <div class="form-group">
+          <label for="password">Password:</label><br />
+          <input
+              type="password"
+              id="password"
+              [(ngModel)]="password"
+              name="password"
+              required
+              class="input-field"
+              placeholder="Enter your password"
+          />
+          <small *ngIf="myForm.submitted && !password" class="error-message">
+              Password is required
+          </small>
+      </div>
+
+      <button type="submit" [disabled]="myForm.invalid" class="submit-button">Login</button>
+
+      <div *ngIf="loginError" class="error-message">{{ loginError }}</div>
+  </form>
+</div>

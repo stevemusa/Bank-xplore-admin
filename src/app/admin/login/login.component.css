@@ -1,0 +1,125 @@
+/* Container for the login form */
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full height of the viewport */
+  margin: 0; /* Remove default margin */
+  background-color: #f4f4f4; /* Optional background color for contrast */
+}
+
+/* Container for the login form */
+.login-container {
+  margin: 100px auto;
+  max-width: 380px; /* Max width */
+  width: 60%; /* Make it responsive */
+  padding: 2rem;
+  background-color: #ffffff; /* Background color for the form */
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 5); /* Adjust shadow for better visibility */
+  text-align: center; /* Centering text */
+}
+  
+  
+  /* Logo styling */
+  .logo {
+    max-width: 100px; /* Adjust logo size */
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Title styling */
+  .login-title {
+    color: #052A71; /* Dark blue color for title */
+    margin-bottom: 1.7rem;
+  }
+  
+  /* Form group styling */
+  .form-group {
+    margin-bottom: 0.5rem;
+    font-size: large;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    
+  }
+  
+  /* Input field styling */
+  .form-control {
+   
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 6px 178px 6px 14px;
+        gap: 5px;
+
+        width: 150px;
+        height: 30px;
+
+        background: #E5EAFF;
+        border-radius: 8px;
+
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        align-self: stretch;
+        flex-grow: 0;
+
+    width: 100%; /* Full width */
+    padding: 0.5rem; /* Padding */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+  }
+  /* Button styling */
+  .btn-login {
+
+        display:block;
+        justify-content: center;
+        align-items: center;
+        padding: 6px 60px;
+        margin-left: 100px;
+        padding-left: 50px;
+        gap: 10px;
+        color: aliceblue;
+        font-family: baloon 2;
+        font-size: 20px;
+
+        width: 150px;
+        height: 47px;
+
+        background: #052A71;
+        border-radius: 8px;
+  }
+  
+  .btn-login:hover {
+    background-color: #040f4e; /* Darker shade on hover */
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Ensure it's above other content */
+  }
+  
+  .spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  p {
+    margin-top: 20px;
+    font-size: 16px;
+    color: blue;
+  }

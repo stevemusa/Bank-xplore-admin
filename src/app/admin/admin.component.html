@@ -1,0 +1,12 @@
+<div class="dashboard-container">
+    <app-navbar></app-navbar> <!-- Navbar always visible -->
+    
+    <div class="dashboard-content">
+      <app-sidebar></app-sidebar> <!-- Sidebar always visible -->
+      
+      <div class="main-content">
+        <router-outlet></router-outlet> <!-- Child components will render here -->
+      </div>
+    </div>
+  </div>
+  

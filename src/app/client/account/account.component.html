@@ -1,0 +1,87 @@
+<!-- Account Container -->
+<div class="account-container">
+  
+  <!-- Add Account Button and Form -->
+  <div class="add-account-container">
+    <h2>Add New Account</h2>
+
+    <!-- Button to Show Add Account Form -->
+    <button (click)="toggleAddAccountForm()" class="btn btn-success add-account-btn">
+      Add Account
+    </button>
+
+    <!-- Add Account Form (only visible when toggled on) -->
+    <div *ngIf="isAddAccountFormVisible" class="add-account-form">
+      <h3>Enter Account Details</h3>
+      <form (ngSubmit)="addAccount()">
+        <div class="form-group">
+          <label for="userID">User ID</label> <!-- New User ID Field -->
+          <input type="text" id="userID" [(ngModel)]="newAccount.userID" name="userID" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="userName">User Name</label>
+          <input type="text" id="userName" [(ngModel)]="newAccount.userName" name="userName" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="accountNumber">Account Number</label>
+          <input type="text" id="accountNumber" [(ngModel)]="newAccount.accountNumber" name="accountNumber" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="accountName">Account Name</label>
+          <input type="text" id="accountName" [(ngModel)]="newAccount.accountName" name="accountName" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="transactionLimit">Transaction Limit</label>
+          <input type="number" id="transactionLimit" [(ngModel)]="newAccount.transactionLimit" name="transactionLimit" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">Add Account</button>
+        <button type="button" (click)="toggleAddAccountForm()" class="btn btn-secondary">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Table for displaying accounts -->
+   <h2> Registered Accounts</h2>
+  <table class="account-table">
+    <thead>
+      <tr>
+        <th>Account ID</th>
+        <th>User ID</th> <!-- Added 'User ID' column -->
+        <th>User Name</th>
+        <th>Account Number</th>
+        <th>Account Name</th>
+        <th>Transaction Limit</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let account of accounts" [ngClass]="{'online-account': account.status === 'online', 'offline-account': account.status === 'offline'}">
+        <td>{{ account.id }}</td>
+        <td>{{ account.userID }}</td> <!-- Display User ID -->
+        <td>{{ account.userName }}</td>
+        <td>{{ account.accountNumber }}</td>
+        <td>{{ account.accountName }}</td> <!-- Display Account Name -->
+        <td>{{ account.transactionLimit | currency }}</td>
+        <td>{{ account.status }}</td>
+        <td>
+          <!-- View Transactions Button -->
+          <button [routerLink]="['/accounts/view-transactions', account.id]" class="btn btn-primary">
+            View Transactions
+          </button>
+
+          <!-- Delete Account Button -->
+          <button (click)="removeAccount(account.id)" class="btn btn-danger">
+            Delete Account
+          </button>
+
+          <!-- Toggle Suspension Button -->
+          <button (click)="toggleAccountSuspension(account.id)" class="btn" 
+            [ngClass]="{'btn-warning': account.isSuspended, 'btn-success': !account.isSuspended}">
+            {{ account.isSuspended ? 'Reactivate' : 'Suspend' }} Account
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,42 @@
+.transaction-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin: 20px auto; /* Center container */
+  max-width: 800px; /* Limit the width */
+  margin-top:-500px;
+}
+
+.client-info {
+  margin-bottom: 20px;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.transaction-table th {
+  background-color: #f2f2f2;
+}
+
+.transaction-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.transaction-table tbody tr:hover {
+  background-color: #e0e0e0; /* Highlight on hover */
+}
+
+.transaction-table tbody tr td:last-child {
+  text-align: right; /* Right-align the amount */
+}

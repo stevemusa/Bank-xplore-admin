@@ -1,0 +1,27 @@
+<div class="notifications-container">
+    <h2>Client Messages</h2>
+  
+    <!-- Message List -->
+    <div class="message-list">
+      <ul>
+        <li *ngFor="let message of messages" [ngClass]="{'unread': !message.readStatus}" (click)="selectMessage(message)">
+          {{ message.sender }}: {{ message.content }}
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Message Details (Read Message) -->
+    <div *ngIf="selectedMessage" class="message-details">
+      <h3>Message from {{ selectedMessage.sender }}</h3>
+      <p>{{ selectedMessage.content }}</p>
+  
+      <!-- Reply Section -->
+      <div class="reply-section">
+        <h4>Reply</h4>
+        <textarea [(ngModel)]="replyContent" placeholder="Type your reply here..."></textarea>
+        <button (click)="sendReply()" class="btn btn-primary" [disabled]="!replyContent.trim()">Send Reply</button>
+      </div>
+    </div>
+  
+  </div>
+  

@@ -1,0 +1,50 @@
+/* Sidebar Styles */
+.sidebar {
+  width: 250px; /* Sidebar width */
+  background-color: #939ea9; /* Sidebar background color */
+  color: black; /* Text color */
+  padding: 20px; /* Inner padding */
+  display: flex; /* Flexbox layout */
+  flex-direction: column; /* Stack elements vertically */
+  height: 100vh; /* Full height of the viewport */
+}
+
+.sidebar nav ul {
+  list-style: none; /* Remove default list styling */
+  padding: 0; /* Remove padding */
+}
+
+.sidebar nav ul li {
+  margin: 15px 0; /* Space between list items */
+  display: flex; /* Align items horizontally */
+  align-items: center; /* Center items vertically */
+}
+
+.sidebar nav ul li a {
+  color: black; /* Link color */
+  text-decoration: none; /* Remove underline */
+  display: flex; /* Flexbox layout */
+  align-items: center; /* Center items vertically */
+  font-size: 1.1em; /* Slightly larger font */
+  transition: color 0.3s, background-color 0.3s; /* Smooth color transition */
+  padding: 10px; /* Add padding for clickable area */
+}
+
+.sidebar nav ul li a .material-icons {
+  font-size: 1.5em; /* Increase icon size */
+  margin-right: 10px; /* Space between icon and text */
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+  color: #3498db; /* Change text color on hover or active state */
+  background-color: rgba(52, 152, 219, 0.1); /* Light background for hover/active state */
+  font-weight: bold; /* Make active link bold */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+      width: 200px; /* Adjust width for smaller screens */
+  }
+}

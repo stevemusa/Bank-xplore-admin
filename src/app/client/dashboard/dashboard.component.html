@@ -1,0 +1,49 @@
+
+
+  <!-- Main Content Section -->
+  <div class="main-content">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <span class="material-icons search-icon">search</span>
+      <input 
+        type="text" 
+        placeholder="Search accounts..." 
+        [(ngModel)]="searchTerm" 
+        (input)="filterAccounts()" 
+        class="search-input" 
+      />
+    </div>
+
+    <!-- Dashboard Cards Section -->
+    <div class="dashboard-cards">
+      <div class="card">
+        <h3>Total Linked Accounts</h3>
+        <p>{{ totalLinkedAccounts }}</p>
+      </div>
+      <div class="card">
+        <h3>Active Accounts</h3>
+        <p>{{ activeAccounts }}</p>
+      </div>
+      <div class="card">
+        <h3>Pending Transactions</h3>
+        <p>{{ pendingTransactions }}</p>
+      </div>
+      <div class="card">
+        <h3>Transaction Volume</h3>
+        <p>{{ transactionVolume | currency }}</p>
+        <canvas id="transactionChart" height="300"></canvas> <!-- Line chart for transaction volume -->
+      </div>
+      <div class="card">
+        <h3>Customer Insights</h3>
+        <canvas id="customerChart" height="300"></canvas> <!-- Line chart for customer growth -->
+      </div>
+    </div>
+
+    <!-- Filtered Accounts Display -->
+    <div class="filtered-accounts" *ngIf="filteredAccounts.length > 0">
+      <h4>Filtered Accounts:</h4>
+      <ul>
+        <li *ngFor="let account of filteredAccounts">{{ account }}</li>
+      </ul>
+    </div>
+  </div>

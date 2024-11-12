@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <div class="row">
+    <!-- Users Card -->
+    <div class="col-md-6 mb-4">
+      <div class="card text-white bg-primary card-hover mx-3"> <!-- Added mx-3 for horizontal margin -->
+        <div class="card-header">Users</div>
+        <div class="card-body">
+          <h5 class="card-title">Number of Users</h5>
+          <p class="card-text">{{ numberOfUsers }}</p> <!-- Dynamic data -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications Card -->
+    <div class="col-md-6 mb-4">
+      <div class="card text-white bg-warning card-hover mx-3"> <!-- Added mx-3 for horizontal margin -->
+        <div class="card-header">Notifications</div>
+        <div class="card-body">
+          <h5 class="card-title">New Notifications</h5>
+          <p class="card-text">{{ numberOfNotifications }}</p> <!-- Dynamic data -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Transactions Card -->
+    <div class="col-md-6 mb-4">
+      <div class="card text-white bg-success card-hover mx-3"> <!-- Added mx-3 for horizontal margin -->
+        <div class="card-header">Transactions</div>
+        <div class="card-body">
+          <h5 class="card-title">Total Transactions</h5>
+          <p class="card-text">{{ totalTransactions }}</p> <!-- Dynamic data -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Waiting Approval Card -->
+    <div class="col-md-6 mb-4">
+      <div class="card text-white bg-danger card-hover mx-3"> <!-- Added mx-3 for horizontal margin -->
+        <div class="card-header">Users Waiting Approval</div>
+        <div class="card-body">
+          <h5 class="card-title">Pending Approvals</h5>
+          <p class="card-text">{{ usersWaitingApproval }}</p> <!-- Dynamic data -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

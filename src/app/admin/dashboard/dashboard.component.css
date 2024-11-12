@@ -1,0 +1,17 @@
+.card-hover {
+  border-radius: 12px; /* Rounded corners */
+  transition: transform 0.8s; /* Animation for hover effect */
+  height: 100%;
+  max-width: 80%; /* Adjust maximum width of the cards */
+  margin: auto; /* Center cards within their columns */
+}
+
+.card-hover:hover {
+  transform: translateY(-5px); /* Move the card slightly up on hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 5); /* Shadow effect on hover */
+}
+.row{
+  
+  margin-top: 30px;
+
+}

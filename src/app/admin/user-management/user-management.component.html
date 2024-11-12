@@ -1,0 +1,61 @@
+<div class="display">
+
+<h2 class="header">User Management</h2>
+
+<!-- Table for logged in users -->
+<div class="table-container">
+  <h3>Logged In Users</h3>
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of loggedInUsers">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Table for users waiting for approval -->
+<div class="table-container">
+  <h3>Users Waiting for Approval</h3>
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Actions</th> <!-- Added Actions column -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of pendingApprovalUsers">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.status }}</td>
+        <td>
+          <button (click)="approveUser(user)">Approve</button>
+          <button (click)="declineUser(user)">Decline</button>
+        </td> <!-- Approve and Decline buttons -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Summary for logged in and pending approval users -->
+<div class="summary">
+  <h3>Total Logged In Users: {{ loggedInUsers.length }}</h3>
+  <h3>Total Users Waiting for Approval: {{ pendingApprovalUsers.length }}</h3>
+</div>
+</div>

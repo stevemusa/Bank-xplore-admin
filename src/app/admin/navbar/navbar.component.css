@@ -1,0 +1,44 @@
+.navbar {
+    
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between logo and links */
+    align-items: center; /* Center items vertically */
+    background-color:  rgb(23, 151, 202); /* Semi-transparent background */
+    padding: 10px 20px; /* Padding around the navbar */
+    position:fixed; /* Fix position on the top */
+    top: 0; /* Position at the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width */
+    transition: top 0.3s; /* Smooth transition for the scroll effect */
+    z-index: 1000; /* Ensure it's on top of other content */
+}
+
+.logo {
+    flex-shrink: 0; /* Prevent logo from shrinking */
+}
+
+.nav-links {
+    display: flex; /* Align links in a row */
+    gap: 15px; /* Space between links */
+}
+
+.nav-links a {
+    color: white; /* Text color */
+    text-decoration: none; /* Remove underline */
+    padding: 10px; /* Padding around links */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.nav-links a:hover {
+    background-color: gray; /* Light hover effect */
+}
+
+body {
+    margin: 0; /* Remove default margin */
+    padding-top: 60px; /* Space for fixed navbar */
+}
+
+.main-content {
+    padding: 20px; /* Add padding to the main content area */
+    /* Other styles for your main content */
+}
