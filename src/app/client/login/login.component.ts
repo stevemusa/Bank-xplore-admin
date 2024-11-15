@@ -22,26 +22,38 @@ export class LoginComponent {
   onSubmit() {
     if (this.email && this.password) {
       const loginUrl = 'http://34.28.208.64:8080/kyc/auth/login';
-
+  
       const headers = new HttpHeaders({
         'Content-Type': 'application/json'
       });
-
+  
       this.http.post(loginUrl, { email: this.email, password: this.password }, { headers })
         .subscribe({
           next: (response: any) => {
-            this.loginError = null; // Clear any previous error
-            this.router.navigate(['/client/dashboard']); // Navigate to dashboard on successful login
+            this.loginError = '';  // Clear any previous error messages
+            const token = response.payload.token;
+  
+            if (token) {
+              localStorage.setItem('authToken', token);  // Store the token in localStorage
+              this.email = '';
+              this.password = '';
+              this.router.navigate(['client/dashboard']);  // Navigate to the dashboard
+            }
           },
           error: (err) => {
-            if (err.status === 401) {
-              this.loginError = 'Unauthorized: Incorrect email or password';
-            } else if (err.status === 400) {
-              this.loginError = 'Bad Request: Please check your input';
-            } else if (err.status === 500) {
-              this.loginError = 'Server error: Please try again later';
-            } else {
-              this.loginError = 'An unexpected error occurred. Please try again.';
+            // Display appropriate error messages based on the HTTP status code
+            switch (err.status) {
+              case 401:
+                this.loginError = 'Unauthorized: Incorrect email or password';
+                break;
+              case 400:
+                this.loginError = 'Bad Request: Please check your input';
+                break;
+              case 500:
+                this.loginError = 'Server error: Please try again later';
+                break;
+              default:
+                this.loginError = 'An unexpected error occurred. Please try again.';
             }
             console.error('Login error:', err);
           }
@@ -50,4 +62,5 @@ export class LoginComponent {
       this.loginError = 'Please fill in both email and password';
     }
   }
+  
 }

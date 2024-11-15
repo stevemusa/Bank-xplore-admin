@@ -2,12 +2,14 @@
 .account-container {
   padding-left: 250px;
   font-family: Arial, sans-serif;
-  margin-top: -520px;  /* Adjusted from -500px to improve layout */
+margin-top: -550px;  /* Adjust margin-top for proper layout */
 }
 
-h2 {
+/* Header Styles */
+h2, h3 {
   text-align: center;
   margin-bottom: 30px;
+  font-size: 24px;
 }
 
 /* Table Styling */
@@ -15,6 +17,7 @@ h2 {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  background-color: #ffffff; /* Ensure table has a white background */
 }
 
 .account-table th, .account-table td {
@@ -25,6 +28,8 @@ h2 {
 
 .account-table th {
   background-color: #f4f4f4;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 /* Status Color Coding */
@@ -99,6 +104,8 @@ button.btn-success.add-account-btn:hover {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 80%; /* Adjust form width for better layout */
+  margin: 0 auto; /* Center the form */
 }
 
 .add-account-form h3 {
@@ -118,6 +125,7 @@ button.btn-success.add-account-btn:hover {
   padding: 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  box-sizing: border-box;  /* Ensure padding is accounted for in width */
 }
 
 .add-account-form button {
@@ -130,6 +138,7 @@ button.btn-success.add-account-btn:hover {
 .account-table td button {
   width: auto;
   font-size: 14px;
+  padding: 6px 12px;  /* Adjust padding for better spacing */
 }
 
 /* Specific Styles for Online/Offline Account Rows */
@@ -149,4 +158,24 @@ button.btn-success.add-account-btn:hover {
 
 .offline-account:hover {
   background-color: #f5c6cb;  /* Lighter red on hover */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .account-container {
+    padding-left: 20px;
+    margin-top: 20px; /* Adjust the margin */
+  }
+
+  .add-account-form {
+    width: 100%; /* Make the form full-width on smaller screens */
+  }
+
+  .account-table th, .account-table td {
+    padding: 10px;
+  }
+
+  .account-table {
+    margin-top: 20px;
+  }
 }

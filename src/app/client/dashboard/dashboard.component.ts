@@ -93,6 +93,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
       },
     });
+
   }
 
   // Method to create the transaction volume chart

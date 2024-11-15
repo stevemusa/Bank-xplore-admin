@@ -1,105 +1,145 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';  // Import FormsModule for ngModel
+import { FormsModule } from '@angular/forms';  // Import FormsModule
+import { HttpHeaders } from '@angular/common/http';
+
+interface Account {
+  accountId: number;
+  accountHolderName: string;
+  accountNumber: string;
+  accountType: string;
+  balance: number;
+  currency: string;
+  initialDeposit: number;
+  bankId: string;
+  createdAt: string;
+  updatedAt: string;
+  isSuspended: boolean;
+}
 
 @Component({
   selector: 'app-account',
+  standalone: true,  // Standalone component (no need to declare in module)
+  imports: [CommonModule, HttpClientModule, FormsModule],  // Include FormsModule here
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css'],
-  standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, HttpClientModule, FormsModule]  // Add FormsModule here
+  styleUrls: ['./account.component.css']
 })
-export class AccountComponent {
-  // Updated accounts list with accountName instead of nickname
-  accounts = [
-    {
-      id: 1,
-      userID: '0987654321',
-      userName: 'John Doe',
-      accountNumber: '1234567890',
-      accountName: 'Main Business Account',  // Changed nickname to accountName
-      balance: 50000,
-      transactionLimit: 10000,
-      isSuspended: false,
-      status: 'online',
-      transactionHistory: [
-        { date: '2024-10-01', description: 'Payment Received', amount: 1500 },
-        { date: '2024-10-05', description: 'Utility Payment', amount: -200 },
-      ],
-    },
-    {
-      id: 2,
-      userID: '0987654321',
-      userName: 'Jane Smith',
-      accountNumber: '0987654321',
-      accountName: 'Payroll Account',  // Changed nickname to accountName
-      balance: 20000,
-      transactionLimit: 5000,
-      isSuspended: false,
-      status: 'offline',
-      transactionHistory: [
-        { date: '2024-10-03', description: 'Salary Payment', amount: -5000 },
-        { date: '2024-10-10', description: 'Deposit', amount: 3000 },
-      ],
-    }
-  ];
-
-  // New account model (with userID, userName, accountName)
-  newAccount = {
-    userID: '',
-    userName: '',
+export class AccountComponent implements OnInit {
+  accounts: Account[] = [];  // Array to hold the account data
+  newAccount: Account = {
+    accountId: 0,
+    accountHolderName: '',
     accountNumber: '',
-    accountName: '',
-    transactionLimit: 0
-  };
+    accountType: '',
+    balance: 0,
+    currency: 'KES',  // Default currency set to KES (Kenyan Shilling)
+    initialDeposit: 0,
+    bankId: '1',  // Default bankId set to "1"
+    createdAt: '',
+    updatedAt: '',
+    isSuspended: false
+  };  // Object to hold the new account details
+  isAddAccountFormVisible: boolean = false;  // Flag to toggle the Add Account form visibility
+  isLoading: boolean = true;  // To track the loading state
+  errorMessage: string = '';  // To hold any error message
 
-  // Flag to toggle visibility of Add Account Form
-  isAddAccountFormVisible = false;
+  constructor(private http: HttpClient) {}
 
-  // Method to toggle Add Account Form visibility
+  ngOnInit(): void {
+    this.fetchAccounts();
+  }
+
+  // Fetch the account details from the backend API
+  fetchAccounts(): void {
+    const apiUrl = 'http://34.28.208.64:8080/banking/family/accounts/all'; // Replace with your actual API URL
+
+    // Assuming you already have an authentication token in localStorage
+    const authToken = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    this.http.get<Account[]>(apiUrl, { headers }).subscribe(
+      (response) => {
+        this.accounts = response;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching accounts:', error);
+        this.errorMessage = error.statusText || 'Unknown error occurred';
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Toggle the visibility of the "Add Account" form
   toggleAddAccountForm(): void {
     this.isAddAccountFormVisible = !this.isAddAccountFormVisible;
   }
 
-  // Method to add a new account
+  // Add a new account via API
   addAccount(): void {
-    // Simple ID generation by incrementing the highest ID in the current accounts
-    const newAccountId = Math.max(...this.accounts.map(account => account.id)) + 1;
+    const apiUrl = 'http://34.28.208.64:8080/banking/family/accounts/create'; // Replace with your actual API URL
 
-    // Include missing properties with default values
-    const accountToAdd = { 
-      ...this.newAccount, 
-      id: newAccountId,
-      balance: 0,             // Default balance
-      isSuspended: false,     // Default suspension status
-      status: 'offline',      // Default status
-      transactionHistory: []  // Default empty transaction history
-    };
+    // Assuming you already have an authentication token in localStorage
+    const authToken = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`,
+      'Content-Type': 'application/json'
+    });
 
-    // Add the new account to the list
-    this.accounts.push(accountToAdd);
-
-    // Reset the form
-    this.newAccount = { userID: '', userName: '', accountNumber: '', accountName: '', transactionLimit: 0 };
-    this.isAddAccountFormVisible = false;  // Hide form after adding
-
-    console.log(`Account added with ID ${newAccountId}`);
+    this.http.post<Account>(apiUrl, this.newAccount, { headers }).subscribe(
+      (response) => {
+        // Add the new account to the accounts list
+        this.accounts.push(response);
+        this.isAddAccountFormVisible = false;  // Hide the form after adding the account
+        this.newAccount = {
+          accountId: 0,
+          accountHolderName: '',
+          accountNumber: '',
+          accountType: '',
+          balance: 0,
+          currency: 'KES',
+          initialDeposit: 0,
+          bankId: '1',  // Reset to default bankId
+          createdAt: '',
+          updatedAt: '',
+          isSuspended: false
+        }; // Reset the new account form
+      },
+      (error) => {
+        console.error('Error adding account:', error);
+        this.errorMessage = error.statusText || 'Unknown error occurred';
+      }
+    );
   }
 
-  // Method to remove an account by its ID
-  removeAccount(accountId: number): void {
-    this.accounts = this.accounts.filter(account => account.id !== accountId);
-    console.log(`Account with ID ${accountId} has been removed.`);
-  }
-
-  // Method to toggle the suspension of an account
+  // Toggle the suspension status of an account
   toggleAccountSuspension(accountId: number): void {
-    const account = this.accounts.find(account => account.id === accountId);
-    if (account) {
-      account.isSuspended = !account.isSuspended;
-      console.log(`Account with ID ${accountId} is now ${account.isSuspended ? 'suspended' : 'active'}.`);
-    }
+    const apiUrl = `http://your-backend-api-url/accounts/suspend/${accountId}`; // Replace with your actual API URL
+    const account = this.accounts.find(a => a.accountId === accountId);
+    const newStatus = account?.isSuspended ? 'activate' : 'suspend';
+
+    // Assuming you already have an authentication token in localStorage
+    const authToken = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    this.http.patch(apiUrl, { status: newStatus }, { headers }).subscribe(
+      () => {
+        // Update the account suspension status locally
+        if (account) {
+          account.isSuspended = !account.isSuspended;
+        }
+      },
+      (error) => {
+        console.error('Error updating account suspension:', error);
+        this.errorMessage = error.statusText || 'Unknown error occurred';
+      }
+    );
   }
 }

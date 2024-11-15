@@ -2,65 +2,66 @@
     margin-left: 250px; /* Left margin */
     padding: 20px; /* Padding */
     margin-top: -550px; /* Adjusted top margin */
-}
-
-.transactions-table {
+  }
+  
+  .transactions-table {
     width: 100%; /* Full width for the table */
     border-collapse: collapse; /* Remove space between table cells */
     margin-top: 20px; /* Space above the table */
-}
-
-.transactions-table th,
-.transactions-table td {
+  }
+  
+  .transactions-table th,
+  .transactions-table td {
     padding: 12px 15px; /* Cell padding */
     border: 1px solid #ddd; /* Cell border */
     text-align: left; /* Align text to the left */
-}
-
-.transactions-table th {
+  }
+  
+  .transactions-table th {
     background-color: #0a57ab; /* Header background color */
     font-weight: bold; /* Bold header text */
     color: white; /* White text for header */
-}
-
-.transactions-table tbody tr:nth-child(even) {
+  }
+  
+  .transactions-table tbody tr:nth-child(even) {
     background-color: #f9f9f9; /* Alternate row color */
-}
-
-.transactions-table tbody tr:hover {
+  }
+  
+  .transactions-table tbody tr:hover {
     background-color: #f1f1f1; /* Row hover effect */
-}
-
-/* Conditional styles for transaction status */
-.transactions-table tbody tr.pending {
+  }
+  
+  /* Conditional styles for transaction status */
+  .transactions-table tbody tr.pending {
     background-color: orange; /* Pending transactions */
     color: white; /* Optional: text color for better contrast */
-}
-
-.transactions-table tbody tr.completed {
+  }
+  
+  .transactions-table tbody tr.completed {
     background-color: green; /* Completed transactions */
     color: white; /* Optional: text color for better contrast */
-}
-
-.view-btn,
-.delete-btn {
+  }
+  
+  .view-btn,
+  .delete-btn {
     padding: 6px 12px; /* Button padding */
     border: none; /* Remove border */
     border-radius: 4px; /* Rounded corners */
     cursor: pointer; /* Pointer on hover */
-}
-
-.view-btn {
+  }
+  
+  .view-btn {
     background-color: #007bff; /* Blue button color */
     color: white; /* White text */
-}
-
-.delete-btn {
+  }
+  
+  .delete-btn {
     background-color: #dc3545; /* Red button color */
     color: white; /* White text */
-}
-
-.view-btn:hover,
-.delete-btn:hover {
+  }
+  
+  .view-btn:hover,
+  .delete-btn:hover {
     opacity: 0.8; /* Slight transparency on hover */
-}
+  }
+  
