@@ -1,67 +1,97 @@
 .transactions-container {
-    margin-left: 250px; /* Left margin */
-    padding: 20px; /* Padding */
-    margin-top: -550px; /* Adjusted top margin */
+  margin-left: 250px; /* Center the container horizontally */
+  margin-right: auto; /* Center the container horizontally */
+  padding: 20px;
+  margin-top: -550px; /* Adjusted top margin */
+  max-width: 1200px; /* Limit maximum width for better readability */
+  overflow-x: auto; /* Add horizontal scroll for smaller screens */
+  background-color: #f5f5f5; /* Optional: light background */
+  border-radius: 8px; /* Rounded corners for the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+}
+
+.transactions-table {
+  width: 100%; /* Full width for the table */
+  border-collapse: collapse; /* Remove space between table cells */
+  margin-top: 20px;
+  font-size: 14px; /* Adjust font size for better fitting */
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 10px 12px; /* Slightly reduce padding */
+  border: 1px solid #ddd; /* Cell border */
+  text-align: left;
+  word-break: break-word; /* Handle long text gracefully */
+}
+
+.transactions-table th {
+  background-color: #0077cc; /* Improved header background color */
+  font-weight: bold;
+  color: white;
+}
+
+.transactions-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.transactions-table tbody tr:hover {
+  background-color: #eef; /* Subtle hover effect */
+}
+
+/* Conditional styles for transaction status */
+.transactions-table tbody tr.pending {
+  background-color: orange;
+  color: white;
+}
+
+.transactions-table tbody tr.completed {
+  background-color: green;
+  color: white;
+}
+
+/* Responsive styles for buttons */
+.view-btn,
+.delete-btn {
+  padding: 8px 12px; /* Adjusted padding */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px; /* Consistent font size */
+}
+
+.view-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.view-btn:hover,
+.delete-btn:hover {
+  opacity: 0.8;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .transactions-container {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px;
   }
-  
-  .transactions-table {
-    width: 100%; /* Full width for the table */
-    border-collapse: collapse; /* Remove space between table cells */
-    margin-top: 20px; /* Space above the table */
-  }
-  
+
   .transactions-table th,
   .transactions-table td {
-    padding: 12px 15px; /* Cell padding */
-    border: 1px solid #ddd; /* Cell border */
-    text-align: left; /* Align text to the left */
+    font-size: 12px; /* Smaller font size */
+    padding: 8px; /* Adjusted padding */
   }
-  
-  .transactions-table th {
-    background-color: #0a57ab; /* Header background color */
-    font-weight: bold; /* Bold header text */
-    color: white; /* White text for header */
-  }
-  
-  .transactions-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Alternate row color */
-  }
-  
-  .transactions-table tbody tr:hover {
-    background-color: #f1f1f1; /* Row hover effect */
-  }
-  
-  /* Conditional styles for transaction status */
-  .transactions-table tbody tr.pending {
-    background-color: orange; /* Pending transactions */
-    color: white; /* Optional: text color for better contrast */
-  }
-  
-  .transactions-table tbody tr.completed {
-    background-color: green; /* Completed transactions */
-    color: white; /* Optional: text color for better contrast */
-  }
-  
+
   .view-btn,
   .delete-btn {
-    padding: 6px 12px; /* Button padding */
-    border: none; /* Remove border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer on hover */
+    padding: 6px 10px; /* Smaller buttons */
+    font-size: 12px; /* Adjusted font size */
   }
-  
-  .view-btn {
-    background-color: #007bff; /* Blue button color */
-    color: white; /* White text */
-  }
-  
-  .delete-btn {
-    background-color: #dc3545; /* Red button color */
-    color: white; /* White text */
-  }
-  
-  .view-btn:hover,
-  .delete-btn:hover {
-    opacity: 0.8; /* Slight transparency on hover */
-  }
-  
+}

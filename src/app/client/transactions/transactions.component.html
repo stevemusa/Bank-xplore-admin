@@ -1,39 +1,44 @@
 <div class="transactions-container">
   <h2>Transactions Overview</h2>
-  
+
   <!-- Show a loading message while the data is being fetched -->
-  <div *ngIf="isLoading">Loading transactionss...</div>
-  
+  <div *ngIf="isLoading">Loading transactions...</div>
+
   <!-- Show an error message if the API call fails -->
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  
-  <!-- Table for displaying transactionss -->
+
+  <!-- Table for displaying transactions -->
   <table class="transactions-table" *ngIf="!isLoading && !errorMessage">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Currency</th>
-        <th>Account ID</th>
-        <th>Account No</th>
+        <th>Transaction ID</th>
         <th>Transaction Type</th>
         <th>Amount</th>
+        <th>Currency</th>
+        <th>Sender Account Number</th>
+        <th>Recipient Account Name</th>
+        <th>Recipient Account Number</th>
+        <th>Recipient Bank Code</th>
+        <th>Transaction Date</th>
         <th>Status</th>
+        <th>Reference</th>
+        <th>Narration</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let transactions of transactions" 
-          [ngClass]="{
-            'pending': transactions.status === 'PENDING', 
-            'completed': transactions.status === 'COMPLETED'
-          }">
-        <!-- Correct access to account properties -->
-        <td>{{ transactions.account.accountHolderName }}</td> <!-- Account Holder Name -->
-        <td>{{ transactions.account.currency }}</td> <!-- Currency -->
-        <td>{{ transactions.account.accountId }}</td> <!-- Account ID -->
-        <td>{{ transactions.account.accountNumber }}</td> <!-- Account Number -->
-        <td>{{ transactions.transactionType }}</td> <!-- Transactions Type -->
-        <td>{{ transactions.amount }}</td> <!-- Amount -->
-        <td>{{ transactions.status }}</td> <!-- Status -->
+      <tr *ngFor="let transaction of transactions">
+        <td>{{ transaction.id }}</td>
+        <td>{{ transaction.transactionType }}</td>
+        <td>{{ transaction.amount }}</td>
+        <td>{{ transaction.currency }}</td>
+        <td>{{ transaction.senderAccountNumber }}</td>
+        <td>{{ transaction.recipientAccountName }}</td>
+        <td>{{ transaction.recipientAccountNumber }}</td>
+        <td>{{ transaction.recipientBankCode }}</td>
+        <td>{{ transaction.transactionDate | date: 'short' }}</td>
+        <td>{{ transaction.status }}</td>
+        <td>{{ transaction.reference }}</td>
+        <td>{{ transaction.narration }}</td>
       </tr>
     </tbody>
   </table>
