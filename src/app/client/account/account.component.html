@@ -52,6 +52,7 @@
   <table class="account-table">
     <thead>
       <tr>
+        <th>#</th> <!-- Serial Number Column -->
         <th>Account ID</th>
         <th>Account Holder Name</th>
         <th>Account Number</th>
@@ -64,7 +65,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let account of accounts">
+      <tr *ngFor="let account of accounts; let i = index">
+        <td>{{ i + 1 }}</td> <!-- Serial Number -->
         <td>{{ account.accountId }}</td>
         <td>{{ account.accountHolderName }}</td>
         <td>{{ account.accountNumber }}</td>
@@ -73,6 +75,11 @@
         <td>{{ account.currency }}</td>
         <td>{{ account.createdAt | date: 'short' }}</td> <!-- Created At -->
         <td>{{ account.updatedAt | date: 'short' }}</td> <!-- Updated At -->
+        <td>
+          <!-- Add your actions (edit, delete, etc.) here -->
+          <button class="btn btn-warning">suspend</button>
+ 
+        </td>
       </tr>
     </tbody>
   </table>

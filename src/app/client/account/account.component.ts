@@ -81,6 +81,16 @@ export class AccountComponent implements OnInit {
 
   // Add a new account via API
   addAccount(): void {
+    // Validate account number and account holder name
+    if (!this.isValidAccountNumber(this.newAccount.accountNumber)) {
+      this.errorMessage = 'Account number must be 13 digits long.';
+      return;
+    }
+    if (!this.isValidAccountHolderName(this.newAccount.accountHolderName)) {
+      this.errorMessage = 'Account holder name must contain at least two names.';
+      return;
+    }
+
     const apiUrl = 'http://34.28.208.64:8080/banking/family/accounts/create'; // Replace with your actual API URL
 
     // Assuming you already have an authentication token in localStorage
@@ -114,6 +124,18 @@ export class AccountComponent implements OnInit {
         this.errorMessage = error.statusText || 'Unknown error occurred';
       }
     );
+  }
+
+  // Function to validate account number (must be exactly 13 digits)
+  isValidAccountNumber(accountNumber: string): boolean {
+    const regex = /^[0-9]{13}$/;
+    return regex.test(accountNumber);
+  }
+
+  // Function to validate account holder name (must contain at least two names)
+  isValidAccountHolderName(accountHolderName: string): boolean {
+    const names = accountHolderName.trim().split(' ');
+    return names.length >= 2;  // At least two names
   }
 
   // Toggle the suspension status of an account
