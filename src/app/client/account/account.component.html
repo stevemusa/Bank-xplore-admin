@@ -41,7 +41,7 @@
           <label for="bankId">Bank ID</label>
           <input type="text" id="bankId" [(ngModel)]="newAccount.bankId" name="bankId" class="form-control" placeholder="Enter Bank ID" required />
         </div>
-        <button type="submit" class="btn btn-success">Add Account</button>
+        <button type="submit"(click)="addAccount()" class="btn btn-success">Add Account</button>
         <button type="button" (click)="toggleAddAccountForm()" class="btn btn-secondary">Cancel</button>
       </form>
     </div>

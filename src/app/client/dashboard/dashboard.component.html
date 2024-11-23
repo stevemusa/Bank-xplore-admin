@@ -8,7 +8,7 @@
     </div>
     <div class="card">
       <h3>Active Accounts</h3>
-      <p>{{ activeAccounts }}</p>
+      <p>{{ totalUsers}}</p>
     </div>
     <div class="card">
       <h3>Pending Transactions</h3>
@@ -16,7 +16,7 @@
     </div>
     <div class="card">
       <h3>Transaction Volume</h3>
-      <p>{{ transactionVolume | currency }}</p>
+      <p>{{totalTransactionAmount | currency }}</p>
       <canvas id="transactionChart" height="300"></canvas> <!-- Line chart for transaction volume -->
     </div>
     <div class="card">
