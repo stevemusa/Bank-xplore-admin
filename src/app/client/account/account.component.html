@@ -1,86 +1,110 @@
-<!-- Account Container -->
-<div class="account-container">
-  <!-- Add Account Button and Form -->
-  <div class="add-account-container">
-    <h2>Add New Account</h2>
+<div class="container">
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="isLoading" class="loading-spinner">Loading...</div>
 
-    <!-- Button to Show Add Account Form -->
-    <button (click)="toggleAddAccountForm()" class="btn btn-success add-account-btn">
-      Add Account
-    </button>
+  <!-- Add Account Button -->
+  <button (click)="toggleAddAccountForm()">Add Account</button>
 
-    <!-- Add Account Form (only visible when toggled on) -->
-    <div *ngIf="isAddAccountFormVisible" class="add-account-form">
-      <h3>Enter Account Details</h3>
-      <form (ngSubmit)="addAccount()">
-        <div class="form-group">
-          <label for="accountHolderName">Account Holder Name</label>
-          <input type="text" id="accountHolderName" [(ngModel)]="newAccount.accountHolderName" name="accountHolderName" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label for="accountNumber">Account Number</label>
-          <input type="text" id="accountNumber" [(ngModel)]="newAccount.accountNumber" name="accountNumber" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label for="accountType">Account Type</label>
-          <input type="text" id="accountType" [(ngModel)]="newAccount.accountType" name="accountType" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label for="initialDeposit">Initial Deposit</label>
-          <input type="number" id="initialDeposit" [(ngModel)]="newAccount.initialDeposit" name="initialDeposit" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label for="balance">Account Balance</label>
-          <input type="number" id="balance" [(ngModel)]="newAccount.balance" name="balance" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label for="currency">Currency</label>
-          <input type="text" id="currency" [(ngModel)]="newAccount.currency" name="currency" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label for="bankId">Bank ID</label>
-          <input type="text" id="bankId" [(ngModel)]="newAccount.bankId" name="bankId" class="form-control" placeholder="Enter Bank ID" required />
-        </div>
-        <button type="submit"(click)="addAccount()" class="btn btn-success">Add Account</button>
-        <button type="button" (click)="toggleAddAccountForm()" class="btn btn-secondary">Cancel</button>
-      </form>
-    </div>
+  <!-- Add Account Form (conditional visibility) -->
+  <div *ngIf="isAddAccountFormVisible">
+    <form (ngSubmit)="addAccount()">
+      <!-- Account Holder Name -->
+      <div>
+        <label for="accountHolderName">Account Holder Name</label>
+        <input [(ngModel)]="newAccount.accountHolderName" name="accountHolderName" required placeholder="Account Holder Name" id="accountHolderName">
+      </div>
+
+      <!-- Account Number -->
+      <div>
+        <label for="accountNumber">Account Number</label>
+        <input [(ngModel)]="newAccount.accountNumber" name="accountNumber" required placeholder="Account Number" id="accountNumber">
+      </div>
+
+      <!-- Account Type -->
+      <div>
+        <label for="accountType">Account Type</label>
+        <input [(ngModel)]="newAccount.accountType" name="accountType" required placeholder="Account Type" id="accountType">
+      </div>
+
+      <!-- Balance -->
+      <div>
+        <label for="balance">Balance</label>
+        <input [(ngModel)]="newAccount.balance" name="balance" required placeholder="Balance" id="balance">
+      </div>
+
+      <!-- Currency -->
+      <div>
+        <label for="currency">Currency</label>
+        <input [(ngModel)]="newAccount.currency" name="currency" required placeholder="Currency" id="currency">
+      </div>
+
+      <!-- Initial Deposit -->
+      <div>
+        <label for="initialDeposit">Initial Deposit</label>
+        <input [(ngModel)]="newAccount.initialDeposit" name="initialDeposit" required placeholder="Initial Deposit" id="initialDeposit">
+      </div>
+
+      <!-- Bank ID -->
+      <div>
+        <label for="bankId">Bank ID</label>
+        <input [(ngModel)]="newAccount.bankId" name="bankId" required placeholder="Bank ID" id="bankId">
+      </div>
+
+      <!-- Account ID -->
+      <div>
+        <label for="accountId">Account ID</label>
+        <input [(ngModel)]="newAccount.accountId" name="accountId" required placeholder="Account ID" id="accountId">
+      </div>
+
+      <button type="submit">Create Account</button>
+    </form>
   </div>
 
-  <!-- Table for displaying accounts -->
-  <h2>Registered Accounts</h2>
-  <table class="account-table">
+  <!-- Sorting Buttons -->
+  <div>
+    <button (click)="toggleSort('accountHolderName')">Sort by Account Holder</button>
+    <button (click)="toggleSort('accountNumber')">Sort by Account Number</button>
+    <button (click)="toggleSort('balance')">Sort by Balance</button>
+    <button (click)="toggleSort('createdAt')">Sort by Creation Date</button>
+    <button (click)="toggleSort('accountId')">Sort by Account ID</button>
+    <button (click)="toggleSort('serialNumber')">Sort by Serial Number</button>
+  </div>
+
+  <!-- Account List -->
+  <table *ngIf="accounts.length > 0">
     <thead>
       <tr>
-        <th>#</th> <!-- Serial Number Column -->
         <th>Account ID</th>
-        <th>Account Holder Name</th>
+        <th>Serial Number</th>
+        <th>Account Holder</th>
         <th>Account Number</th>
         <th>Account Type</th>
-        <th>Account Balance</th>
+        <th>Balance</th>
         <th>Currency</th>
         <th>Created At</th>
-        <th>Updated At</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let account of accounts; let i = index">
-        <td>{{ i + 1 }}</td> <!-- Serial Number -->
+      <tr *ngFor="let account of accounts">
         <td>{{ account.accountId }}</td>
+        <td>{{ account.serialNumber }}</td>
         <td>{{ account.accountHolderName }}</td>
         <td>{{ account.accountNumber }}</td>
         <td>{{ account.accountType }}</td>
-        <td>{{ account.balance | currency: account.currency }}</td>
+        <td>{{ account.balance }}</td>
         <td>{{ account.currency }}</td>
-        <td>{{ account.createdAt | date: 'short' }}</td> <!-- Created At -->
-        <td>{{ account.updatedAt | date: 'short' }}</td> <!-- Updated At -->
+        <td>{{ account.createdAt }}</td>
         <td>
-          <!-- Add your actions (edit, delete, etc.) here -->
-          <button class="btn btn-warning">suspend</button>
- 
+          <button (click)="viewAccountDetails(account.accountId)">View</button>
+          <button (click)="toggleAccountSuspension(account.accountId)">
+            {{ account.isSuspended ? 'Activate' : 'Suspend' }}
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <!-- Message when no accounts are available -->
+  <div *ngIf="accounts.length === 0" class="no-accounts-message">No accounts found</div>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';  // Import FormsModule
+import { FormsModule } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
 
 interface Account {
@@ -11,38 +11,40 @@ interface Account {
   accountType: string;
   balance: number;
   currency: string;
-  initialDeposit: number;
-  bankId: string;
+  initialDeposit: number;  // Added deposit amount
+  bankId: string;  // Added bank ID
   createdAt: string;
   updatedAt: string;
   isSuspended: boolean;
+  serialNumber: string;  // Serial number will be auto-generated for fetched accounts
 }
 
 @Component({
   selector: 'app-account',
-  standalone: true,  // Standalone component (no need to declare in module)
-  imports: [CommonModule, HttpClientModule, FormsModule],  // Include FormsModule here
+  standalone: true,
+  imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  accounts: Account[] = [];  // Array to hold the account data
+  accounts: Account[] = [];
   newAccount: Account = {
     accountId: 0,
     accountHolderName: '',
     accountNumber: '',
     accountType: '',
     balance: 0,
-    currency: 'KES',  // Default currency set to KES (Kenyan Shilling)
-    initialDeposit: 0,
-    bankId: '1',  // Default bankId set to "1"
+    currency: 'KES',  // Default currency
+    initialDeposit: 0,  // Initial deposit
+    bankId: '1',  // Default bank ID
     createdAt: '',
     updatedAt: '',
-    isSuspended: false
-  };  // Object to hold the new account details
-  isAddAccountFormVisible: boolean = false;  // Flag to toggle the Add Account form visibility
-  isLoading: boolean = true;  // To track the loading state
-  errorMessage: string = '';  // To hold any error message
+    isSuspended: false,
+    serialNumber: ''  // Removed from Add Account form
+  };
+  isAddAccountFormVisible: boolean = false;
+  isLoading: boolean = true;
+  errorMessage: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -50,11 +52,9 @@ export class AccountComponent implements OnInit {
     this.fetchAccounts();
   }
 
-  // Fetch the account details from the backend API
   fetchAccounts(): void {
-    const apiUrl = 'http://34.28.208.64:8080/banking/family/accounts/all'; // Replace with your actual API URL
+    const apiUrl = 'http://34.28.208.64:8080/banking/family/accounts/all';
 
-    // Assuming you already have an authentication token in localStorage
     const authToken = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${authToken}`,
@@ -63,7 +63,10 @@ export class AccountComponent implements OnInit {
 
     this.http.get<Account[]>(apiUrl, { headers }).subscribe(
       (response) => {
-        this.accounts = response;
+        this.accounts = response.map((account, index) => ({
+          ...account,
+          serialNumber: (index + 1).toString() // Serial number counting from 1
+        }));
         this.isLoading = false;
       },
       (error) => {
@@ -74,14 +77,18 @@ export class AccountComponent implements OnInit {
     );
   }
 
-  // Toggle the visibility of the "Add Account" form
+  viewAccountDetails(accountId: number): void {
+    // Logic to view account details, for example, navigate to a different page
+    console.log('Viewing details for account:', accountId);
+    // You can use Angular Router to navigate to a detailed view page, like:
+    // this.router.navigate(['/account-details', accountId]);
+  }
+
   toggleAddAccountForm(): void {
     this.isAddAccountFormVisible = !this.isAddAccountFormVisible;
   }
 
-  // Add a new account via API
   addAccount(): void {
-    // Validate account number and account holder name
     if (!this.isValidAccountNumber(this.newAccount.accountNumber)) {
       this.errorMessage = 'Account number must be 13 digits long.';
       return;
@@ -91,9 +98,8 @@ export class AccountComponent implements OnInit {
       return;
     }
 
-    const apiUrl = 'http://34.28.208.64:8080/banking/family/accounts/create'; // Replace with your actual API URL
+    const apiUrl = 'http://34.28.208.64:8080/banking/family/accounts/create';
 
-    // Assuming you already have an authentication token in localStorage
     const authToken = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${authToken}`,
@@ -102,9 +108,8 @@ export class AccountComponent implements OnInit {
 
     this.http.post<Account>(apiUrl, this.newAccount, { headers }).subscribe(
       (response) => {
-        // Add the new account to the accounts list
         this.accounts.push(response);
-        this.isAddAccountFormVisible = false;  // Hide the form after adding the account
+        this.isAddAccountFormVisible = false;
         this.newAccount = {
           accountId: 0,
           accountHolderName: '',
@@ -113,11 +118,12 @@ export class AccountComponent implements OnInit {
           balance: 0,
           currency: 'KES',
           initialDeposit: 0,
-          bankId: '1',  // Reset to default bankId
+          bankId: '1',
           createdAt: '',
           updatedAt: '',
-          isSuspended: false
-        }; // Reset the new account form
+          isSuspended: false,
+          serialNumber: ''  // Removed serial number
+        };
       },
       (error) => {
         console.error('Error adding account:', error);
@@ -126,25 +132,21 @@ export class AccountComponent implements OnInit {
     );
   }
 
-  // Function to validate account number (must be exactly 13 digits)
   isValidAccountNumber(accountNumber: string): boolean {
     const regex = /^[0-9]{13}$/;
     return regex.test(accountNumber);
   }
 
-  // Function to validate account holder name (must contain at least two names)
   isValidAccountHolderName(accountHolderName: string): boolean {
     const names = accountHolderName.trim().split(' ');
-    return names.length >= 2;  // At least two names
+    return names.length >= 2;
   }
 
-  // Toggle the suspension status of an account
   toggleAccountSuspension(accountId: number): void {
-    const apiUrl = `http://your-backend-api-url/accounts/suspend/${accountId}`; // Replace with your actual API URL
+    const apiUrl = `http://your-backend-api-url/accounts/suspend/${accountId}`;
     const account = this.accounts.find(a => a.accountId === accountId);
     const newStatus = account?.isSuspended ? 'activate' : 'suspend';
 
-    // Assuming you already have an authentication token in localStorage
     const authToken = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${authToken}`,
@@ -153,7 +155,6 @@ export class AccountComponent implements OnInit {
 
     this.http.patch(apiUrl, { status: newStatus }, { headers }).subscribe(
       () => {
-        // Update the account suspension status locally
         if (account) {
           account.isSuspended = !account.isSuspended;
         }
@@ -163,5 +164,17 @@ export class AccountComponent implements OnInit {
         this.errorMessage = error.statusText || 'Unknown error occurred';
       }
     );
+  }
+
+  toggleSort(property: keyof Account): void {
+    this.accounts.sort((a, b) => {
+      if (a[property] > b[property]) {
+        return 1;
+      } else if (a[property] < b[property]) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
   }
 }
