@@ -29,10 +29,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   totalUsers: number = 0;
   activeAccounts: number = 0;
   pendingTransactions: number = 0;
-  transactions: number[] = []; // Declare transactions array here
+  transactions: number[] = []; // Transactions array
 
   totalTransactionAmount: number = 0;
   accounts: Account[] = [];
+  filteredAccounts: Account[] = []; // For storing filtered accounts
+  searchTerm: string = ''; // Search term for filtering
   isLoading: boolean = true;
   errorMessage: string = '';
 
@@ -59,6 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.http.get<Account[]>(apiUrl, { headers }).subscribe(
       (response) => {
         this.accounts = response;
+        this.filteredAccounts = response;  // Initialize filtered array
         this.totalUsers = response.length;
         this.activeAccounts = response.filter(account => account.isActive).length;
 
@@ -72,6 +75,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.errorMessage = error.statusText || 'Unknown error occurred';
         this.isLoading = false;
       }
+    );
+  }
+
+  filterAccounts(): void {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredAccounts = this.accounts.filter(account =>
+      account.accountHolderName.toLowerCase().includes(term) ||
+      account.accountNumber.includes(term) ||
+      account.accountType.toLowerCase().includes(term)
     );
   }
 

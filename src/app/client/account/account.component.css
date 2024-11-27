@@ -1,7 +1,6 @@
 /* Style for the container holding the form, table, and buttons */
 .container {
-  margin-top: -550px;
-  margin-left: 250px;
+  margin-bottom: 700px; /* Add a 700px bottom margin */
 }
 
 /* Error message */
@@ -41,7 +40,7 @@ form label {
 }
 
 form input {
-  width: 100%;
+  width: 1000px;
   padding: 8px;
   margin-top: 5px;
   box-sizing: border-box;
@@ -55,7 +54,7 @@ div button {
 
 /* Table styling */
 table {
-  width: 100%;
+  width: 50px;
   border-collapse: collapse;
   margin-top: 20px;
 }
@@ -74,4 +73,26 @@ table th {
 .no-accounts-message {
   font-style: italic;
   color: grey;
+}
+
+/* CSS for the suspend button */
+button.suspended {
+  background-color: orange;
+  color: white;
+}
+
+button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  opacity: 0.8;
 }

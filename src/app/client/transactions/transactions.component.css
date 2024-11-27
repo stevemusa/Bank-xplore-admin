@@ -1,32 +1,47 @@
+/* Ensure the container occupies full height of the page */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Full-page height */
+}
+
+.app-container {  /* Add this class around your main container */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full viewport height */
+}
+
 .transactions-container {
-  margin-left: 250px; /* Center the container horizontally */
-  margin-right: auto; /* Center the container horizontally */
+  flex-grow: 1; /* Allow the container to expand and push content down */
+  margin: 0 auto; /* Center horizontally */
   padding: 20px;
-  margin-top: -550px; /* Adjusted top margin */
-  max-width: 1200px; /* Limit maximum width for better readability */
-  overflow-x: auto; /* Add horizontal scroll for smaller screens */
-  background-color: #f5f5f5; /* Optional: light background */
-  border-radius: 8px; /* Rounded corners for the container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+  max-width: 1200px;
+  overflow-x: auto;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  height: 500px;
 }
 
 .transactions-table {
-  width: 100%; /* Full width for the table */
-  border-collapse: collapse; /* Remove space between table cells */
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 20px;
-  font-size: 14px; /* Adjust font size for better fitting */
+  font-size: 14px;
 }
 
 .transactions-table th,
 .transactions-table td {
-  padding: 10px 12px; /* Slightly reduce padding */
-  border: 1px solid #ddd; /* Cell border */
+  padding: 10px 12px;
+  border: 1px solid #ddd;
   text-align: left;
-  word-break: break-word; /* Handle long text gracefully */
+  word-break: break-word;
 }
 
 .transactions-table th {
-  background-color: #0077cc; /* Improved header background color */
+  background-color: #0077cc;
   font-weight: bold;
   color: white;
 }
@@ -36,7 +51,12 @@
 }
 
 .transactions-table tbody tr:hover {
-  background-color: #eef; /* Subtle hover effect */
+  background-color: #eef;
+}
+
+/* Space below table */
+.table-spacing {
+  margin-bottom: 20px; /* Adjust this to create desired spacing */
 }
 
 /* Conditional styles for transaction status */
@@ -50,14 +70,22 @@
   color: white;
 }
 
-/* Responsive styles for buttons */
+/* Button container for spacing */
+.button-container {
+  margin-top: auto; /* Pushes buttons to the bottom */
+  padding: 10px 0;
+  text-align: center; /* Center align buttons */
+}
+
+/* Button styles */
 .view-btn,
 .delete-btn {
-  padding: 8px 12px; /* Adjusted padding */
+  padding: 8px 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px; /* Consistent font size */
+  font-size: 14px;
+  margin: 5px; /* Space between buttons */
 }
 
 .view-btn {
@@ -75,23 +103,24 @@
   opacity: 0.8;
 }
 
-/* Responsive adjustments for smaller screens */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .transactions-container {
     margin-left: 10px;
     margin-right: 10px;
     padding: 10px;
+    height: auto;
   }
 
   .transactions-table th,
   .transactions-table td {
-    font-size: 12px; /* Smaller font size */
-    padding: 8px; /* Adjusted padding */
+    font-size: 12px;
+    padding: 8px;
   }
 
   .view-btn,
   .delete-btn {
-    padding: 6px 10px; /* Smaller buttons */
-    font-size: 12px; /* Adjusted font size */
+    padding: 6px 10px;
+    font-size: 12px;
   }
 }

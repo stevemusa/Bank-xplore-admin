@@ -5,6 +5,7 @@
   <div class="client-info">
     <p><strong>Client Name:</strong> {{ clientName }}</p>
     <p><strong>Account Number:</strong> {{ accountNumber }}</p>
+    <p><strong>Bank Code:</strong> {{ bankCode }}</p>
   </div>
 
   <!-- Transaction table with Serial Number -->
@@ -22,16 +23,24 @@
     </thead>
     <tbody>
       <tr *ngFor="let transaction of transactions; let i = index">
-        <td>{{ i + 1 }}</td> <!-- Serial number column -->
+        <td>{{ i + 1 }}</td>
         <td>{{ transaction.transactionId }}</td>
         <td>{{ transaction.completionTime | date: 'short' }}</td>
         <td>{{ transaction.details }}</td>
-        <td>{{ transaction.status }}</td>
+        <td [ngClass]="{
+              'status-completed': transaction.status === 'completed',
+              'status-pending': transaction.status === 'pending'
+            }">
+          {{ transaction.status }}
+        </td>
         <td>{{ transaction.category }}</td>
         <td>{{ transaction.amount | currency: 'KES' }}</td>
       </tr>
-      <tr *ngIf="!transactions.length">
-        <td colspan="7" style="text-align: center;">No transactions available.</td>
+      <!-- Display message if there are no transactions -->
+      <tr *ngIf="transactions.length === 0">
+        <td colspan="7" class="no-transactions-message">
+          No transactions available.
+        </td>
       </tr>
     </tbody>
   </table>

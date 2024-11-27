@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpHeaders } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { ViewTransactionComponent } from '../view-transaction/view-transaction.component';
 
+// Interface for account details
 interface Account {
   accountId: number;
   accountHolderName: string;
@@ -11,42 +13,70 @@ interface Account {
   accountType: string;
   balance: number;
   currency: string;
-  initialDeposit: number;  // Added deposit amount
-  bankId: string;  // Added bank ID
+  initialDeposit: number;
+  bankId: string;
   createdAt: string;
   updatedAt: string;
   isSuspended: boolean;
-  serialNumber: string;  // Serial number will be auto-generated for fetched accounts
+  serialNumber: string;
+}
+
+// Interface for transaction details
+interface Transaction {
+  transactionId: string;
+  transactionDate: string;
+  amount: number;
+  transactionType: string;
+  fromAccount: string;
+  toAccount: string;
+  status: string;
+  // Add any additional fields based on your API response
+}
+
+// Interface for transaction response from the API
+interface TransactionResponse {
+  transactions: Transaction[];
+  hasPrevious: boolean;
+  totalPages: number;
+  totalElements: number;
 }
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormsModule],
+  imports: [CommonModule, HttpClientModule, FormsModule], // Removed RouterModule here
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
   accounts: Account[] = [];
+  transactions: Transaction[] = [];
+  accountTypes: string[] = ['Savings', 'Investment', 'Salary', 'Student'];
+
   newAccount: Account = {
     accountId: 0,
     accountHolderName: '',
     accountNumber: '',
     accountType: '',
     balance: 0,
-    currency: 'KES',  // Default currency
-    initialDeposit: 0,  // Initial deposit
-    bankId: '1',  // Default bank ID
+    currency: 'KES',
+    initialDeposit: 0,
+    bankId: '1',
     createdAt: '',
     updatedAt: '',
     isSuspended: false,
-    serialNumber: ''  // Removed from Add Account form
+    serialNumber: ''
   };
+
   isAddAccountFormVisible: boolean = false;
   isLoading: boolean = true;
   errorMessage: string = '';
+  formSubmitted: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private dialog: MatDialog,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.fetchAccounts();
@@ -65,7 +95,7 @@ export class AccountComponent implements OnInit {
       (response) => {
         this.accounts = response.map((account, index) => ({
           ...account,
-          serialNumber: (index + 1).toString() // Serial number counting from 1
+          serialNumber: (index + 1).toString() // Add serial number
         }));
         this.isLoading = false;
       },
@@ -77,11 +107,29 @@ export class AccountComponent implements OnInit {
     );
   }
 
-  viewAccountDetails(accountId: number): void {
-    // Logic to view account details, for example, navigate to a different page
-    console.log('Viewing details for account:', accountId);
-    // You can use Angular Router to navigate to a detailed view page, like:
-    // this.router.navigate(['/account-details', accountId]);
+  viewTransactions(accountNumber: string): void {
+    const apiUrl = `http://34.28.208.64:8080/banking/family/transactions/view/account/${accountNumber}?page=0&size=20`;
+
+    const authToken = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    this.http.get<TransactionResponse>(apiUrl, { headers }).subscribe(
+      (response) => {
+        this.transactions = response.transactions.map((transaction: Transaction, index: number) => ({
+          ...transaction,
+          serialNumber: (index + 1).toString() // Add serial number for display
+        }));
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching transactions:', error);
+        this.errorMessage = error.statusText || 'Unknown error occurred';
+        this.isLoading = false;
+      }
+    );
   }
 
   toggleAddAccountForm(): void {
@@ -97,6 +145,10 @@ export class AccountComponent implements OnInit {
       this.errorMessage = 'Account holder name must contain at least two names.';
       return;
     }
+    if (!this.accountTypes.includes(this.newAccount.accountType)) {
+      this.errorMessage = 'Invalid account type selected.';
+      return;
+    }
 
     const apiUrl = 'http://34.28.208.64:8080/banking/family/accounts/create';
 
@@ -110,26 +162,30 @@ export class AccountComponent implements OnInit {
       (response) => {
         this.accounts.push(response);
         this.isAddAccountFormVisible = false;
-        this.newAccount = {
-          accountId: 0,
-          accountHolderName: '',
-          accountNumber: '',
-          accountType: '',
-          balance: 0,
-          currency: 'KES',
-          initialDeposit: 0,
-          bankId: '1',
-          createdAt: '',
-          updatedAt: '',
-          isSuspended: false,
-          serialNumber: ''  // Removed serial number
-        };
+        this.resetNewAccount();
       },
       (error) => {
         console.error('Error adding account:', error);
         this.errorMessage = error.statusText || 'Unknown error occurred';
       }
     );
+  }
+
+  resetNewAccount(): void {
+    this.newAccount = {
+      accountId: 0,
+      accountHolderName: '',
+      accountNumber: '',
+      accountType: '',
+      balance: 0,
+      currency: 'KES',
+      initialDeposit: 0,
+      bankId: '1',
+      createdAt: '',
+      updatedAt: '',
+      isSuspended: false,
+      serialNumber: ''
+    };
   }
 
   isValidAccountNumber(accountNumber: string): boolean {
@@ -142,39 +198,45 @@ export class AccountComponent implements OnInit {
     return names.length >= 2;
   }
 
-  toggleAccountSuspension(accountId: number): void {
-    const apiUrl = `http://your-backend-api-url/accounts/suspend/${accountId}`;
-    const account = this.accounts.find(a => a.accountId === accountId);
-    const newStatus = account?.isSuspended ? 'activate' : 'suspend';
+  toggleAccountSuspension(accountNumber: string): void {
+    const account = this.accounts.find(a => a.accountNumber === accountNumber);
 
-    const authToken = localStorage.getItem('authToken');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${authToken}`,
-      'Content-Type': 'application/json'
-    });
+    if (account) {
+      const apiUrl = `http://34.28.208.64:8080/banking/family/accounts/suspend/${accountNumber}`;
+      const newStatus = account.isSuspended ? 'activate' : 'suspend';
 
-    this.http.patch(apiUrl, { status: newStatus }, { headers }).subscribe(
-      () => {
-        if (account) {
+      const authToken = localStorage.getItem('authToken');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json'
+      });
+
+      this.http.post(apiUrl, { status: newStatus }, { headers }).subscribe(
+        () => {
           account.isSuspended = !account.isSuspended;
+        },
+        (error) => {
+          console.error('Error updating account suspension:', error);
+          this.errorMessage = error.statusText || 'Unknown error occurred';
         }
-      },
-      (error) => {
-        console.error('Error updating account suspension:', error);
-        this.errorMessage = error.statusText || 'Unknown error occurred';
-      }
-    );
+      );
+    }
   }
 
   toggleSort(property: keyof Account): void {
     this.accounts.sort((a, b) => {
-      if (a[property] > b[property]) {
-        return 1;
-      } else if (a[property] < b[property]) {
-        return -1;
-      } else {
-        return 0;
-      }
+      if (a[property] > b[property]) return 1;
+      else if (a[property] < b[property]) return -1;
+      else return 0;
+    });
+  }
+
+  viewTransaction(account: Account): void {
+    console.log("opening transaction", account.accountNumber);
+
+    this.dialog.open(ViewTransactionComponent, {
+      width: '500px',
+      data: account
     });
   }
 }

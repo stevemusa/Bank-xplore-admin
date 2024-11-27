@@ -13,9 +13,7 @@
   overflow-y: auto; /* Enable vertical scrolling if needed */
   display: flex; /* Flexbox layout */
   flex-direction: column; /* Stack elements vertically */
-  margin-left: 250px;
-  margin-top:-600px;
-}
+ }
 
 /* Search Bar Styles */
 .search-container {
@@ -131,4 +129,4 @@
   .card {
     width: 100%; /* Full-width cards on smaller screens */
   }
-}
+ }
