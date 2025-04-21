@@ -1,23 +1,24 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
   styleUrls: ['./logout.component.css'],
   standalone: true,
+  imports: [CommonModule, RouterModule],
 })
-export class LogoutComponent {
-  constructor(private router: Router) {
+export class LogoutComponent implements OnInit {
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
     this.logout();
   }
 
   logout(): void {
-    // Clear user session or token data
-    localStorage.removeItem('authToken'); // Example: remove token from local storage
-    sessionStorage.clear(); // Clear session storage if used
-
-    // Redirect to login page
+    localStorage.removeItem('authToken');
+    sessionStorage.clear();
     this.router.navigate(['/client/login']);
   }
 }
