@@ -17,8 +17,11 @@ export class LogoutComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('authToken');
-    sessionStorage.clear();
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('authToken');
+      sessionStorage.clear();
+    }
     this.router.navigate(['/client/login']);
   }
+  
 }

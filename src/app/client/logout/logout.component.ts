@@ -57,6 +57,6 @@ export class LogoutComponent {
     setTimeout(() => {
       console.log('Logging out in a few..');
       this.router.navigate(['/home']); // Redirect to the dashboard
-    }, 500);   // 2-second delay
-  }
+    }, 500);   // 2-second delay
+  }
 }
